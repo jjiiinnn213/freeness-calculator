@@ -326,11 +326,11 @@
         <div class="field-row col2">
           <div class="field">
             <label for="ukp_ratio">UKP 비율 (%)</label>
-            <input type="number" id="ukp_ratio" value="90" min="0" max="100" step="1" oninput="checkRatios()">
+            <input type="number" id="ukp_ratio" value="90" min="0" max="100" step="1" oninput="autoFill('ukp_ratio','cnf_ratio')">
           </div>
           <div class="field">
             <label for="cnf_ratio">CNF 비율 (%)</label>
-            <input type="number" id="cnf_ratio" value="10" min="0" max="100" step="1" oninput="checkRatios()">
+            <input type="number" id="cnf_ratio" value="10" min="0" max="100" step="1" oninput="autoFill('cnf_ratio','ukp_ratio')">
           </div>
         </div>
         <div id="ratio-alerts"></div>
@@ -341,11 +341,11 @@
           <div class="field-row col2">
             <div class="field">
               <label for="cnf_a_ratio">CNF A (%)</label>
-              <input type="number" id="cnf_a_ratio" value="50" min="0" max="100" step="1" oninput="checkRatios()">
+              <input type="number" id="cnf_a_ratio" value="50" min="0" max="100" step="1" oninput="autoFill('cnf_a_ratio','cnf_c_ratio')">
             </div>
             <div class="field">
               <label for="cnf_c_ratio">CNF C (%)</label>
-              <input type="number" id="cnf_c_ratio" value="50" min="0" max="100" step="1" oninput="checkRatios()">
+              <input type="number" id="cnf_c_ratio" value="50" min="0" max="100" step="1" oninput="autoFill('cnf_c_ratio','cnf_a_ratio')">
             </div>
           </div>
           <div id="cnf-inner-alerts"></div>
@@ -454,6 +454,14 @@ function updateInfo() {
   document.getElementById('info-conc').textContent  = conc;
   document.getElementById('info-total').textContent = total.toFixed(0);
   document.getElementById('info-dry').textContent   = dry.toFixed(2);
+}
+
+// ── 자동 보완 + 배합비 검사 ──
+function autoFill(sourceId, targetId) {
+  const src = +document.getElementById(sourceId).value;
+  const val = Math.max(0, Math.min(100, 100 - src));
+  document.getElementById(targetId).value = parseFloat(val.toFixed(1));
+  checkRatios();
 }
 
 // ── 배합비 실시간 검사 ──
